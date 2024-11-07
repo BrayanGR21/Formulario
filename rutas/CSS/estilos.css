@@ -1,0 +1,91 @@
+/* Fuente */
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Raleway', sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+}
+
+.contenedor-acordeon {
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+    margin-top: 50px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+
+.contenedor-acordeon h2 {
+    text-align: center;
+    font-size: 24px;
+    padding: 20px;
+    background-color: #810b0b;
+    color: #fff;
+    margin-bottom: 0;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+}
+
+.acordeon {
+    background: #fff;
+}
+
+.acordeon label {
+    display: block;
+    padding: 15px 20px;
+    font-size: 18px;
+    background: #810b0b; /* Color de fondo de los botones */
+    color: #fff; /* Color del texto de los botones */
+    cursor: pointer;
+    margin: 0;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 300ms ease, color 300ms ease;
+}
+
+/* Hover para los botones del acordeón */
+.acordeon label:hover {
+    background-color: #a30c0c; /* Color de fondo al pasar el cursor */
+    color: #ffffff; /* Color del texto al pasar el cursor */
+}
+
+.acordeon .contenido-acordeon {
+    padding: 0 20px;
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height 300ms ease;
+    background-color: #fafafa;
+}
+
+.btn-acordeon:checked ~ .contenido-acordeon {
+    max-height: 500px; 
+    padding: 15px 20px;
+}
+
+.btn-acordeon {
+    display: none;
+}
+
+/* Colores adicionales para diferentes secciones del acordeón */
+.acordeon label:nth-child(2n) {
+    background-color: #117a65; /* Color alternativo para los botones */
+}
+
+.acordeon label:nth-child(2n):hover {
+    background-color: #16a085; /* Hover alternativo */
+}
+
+.acordeon label:nth-child(3n) {
+    background-color: #f39c12; /* Otro color para los botones */
+}
+
+.acordeon label:nth-child(3n):hover {
+    background-color: #e67e22; /* Hover para este color */
+}
