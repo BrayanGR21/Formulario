@@ -48,6 +48,12 @@ switch ($accion) {
     case 'guardar-transporte':
             $titulo = 'Estatus de registro';
             //VALIDAR 
+            $REG = $core::educacion()->getByCurp($_POST['curp']);
+            if(!empty($REG)){
+                $contenido = 'Su CURP ya fue capturada previamente en nuestro sistema.';
+                goto salto;
+            }
+
             if(empty($_POST['nombres'])){
                 $contenido = 'Antes de guardar, ingresa un nombre valido';
                 goto salto;

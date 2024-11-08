@@ -92,4 +92,8 @@ class Educacion
             return false;
         }
     }
+
+    function getByCurp($curp){
+        return $this->db->query("select * from registros_transporte where curp = '$curp';")->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
