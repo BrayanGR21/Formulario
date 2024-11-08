@@ -83,11 +83,11 @@ switch ($accion) {
                 goto salto;
             }
             if(empty($_POST['estado'])){
-                $contenido = 'Amntes de guardar, verifica que el estado sea valido';
+                $contenido = 'Antes de guardar, verifica que el estado sea valido';
                 goto salto;
             }
             if(empty($_POST['codigo_postal'])){
-                $contenido = 'Antes de guardar, verifica que el codigo podtal sea valido';
+                $contenido = 'Antes de guardar, verifica que el codigo postal sea valido';
                 goto salto;
             }
             if(empty($_POST['telefono'])){
@@ -111,7 +111,7 @@ switch ($accion) {
                 goto salto;
             }
             if(empty($_POST['curp'])){
-                $contenido = 'Antes de guardar, verifique que la nacionalidad sea valida';
+                $contenido = 'Antes de guardar, verifique que la curp sea valida';
                 goto salto;
             }
             if(empty($_POST['peso'])){
@@ -127,7 +127,7 @@ switch ($accion) {
                 goto salto;
             }
             if(empty($_POST['enfermedad_cronica'])){
-                $contenido = 'Antes de guardar, verifique que la enfermedad cronica sea valida';
+                $contenido = 'Antes de guardar, verifique que el campo: enfermedad cronica, sea valido';
                 goto salto;
             }
             if(empty($_POST['servicio_medico'])){
@@ -139,7 +139,7 @@ switch ($accion) {
                 goto salto;
             }
             if(empty($_POST['apellido_paterno_tutor'])){
-                $contenido = 'Antes de guardar, verifique qeu el apellido paterno del tutro sea valido';
+                $contenido = 'Antes de guardar, verifique que el apellido paterno del tutro sea valido';
                 goto salto;
             }
             if(empty($_POST['apellido_materno_tutor'])){
