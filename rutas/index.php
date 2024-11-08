@@ -349,7 +349,7 @@
                 </div>
             </div>
             <input type="hidden" name="accion" value="guardar-transporte">
-            <!-- Guardar -->
+            <!-- Guardar el formulario -->
             <div class="d-flex justify-content-end">
                 <button type="submit" class="btn btn-primary">Guardar</button>
             </div>
