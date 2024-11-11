@@ -40,7 +40,7 @@
     <h2>Ficha de Datos Personales para Uso del Transporte</h2>
     <div class="row">
         <div class="col-md-3">
-            <label for="">Colinas</label>
+            <label for="">Colonias</label>
             <select name="colonia" class="form-control">
                 <option value="">seleccione una opcion</option>
             </select>
