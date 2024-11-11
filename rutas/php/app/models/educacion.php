@@ -11,8 +11,22 @@ class Educacion
     }
 
     function guardar(){
+
+        $colonia = $_POST['colonia'] ?? null;
+        $colonia_tutor = $_POST['colonia_tutor'] ?? null;
+    
+        if ($colonia) {
+            $coloniaId = $this->buscarIdColonia($colonia);
+            $colonia = $coloniaId;
+            $colonia = $coloniaId !== null ? $coloniaId : -1;
+
+        }
+        if ($colonia_tutor) {
+            $coloniaTutorId = $this->buscarIdColonia($colonia_tutor);
+            $colonia_tutor = $coloniaTutorId;
+            $colonia_tutor = $coloniaTutorId !== null ? $coloniaTutorId : -1;
+        }
         
-        // Asignación de datos del formulario
         $data = [
             //alumno
             ':apellido_paterno' => $_POST['apellido_paterno'] ?? null,
@@ -20,7 +34,7 @@ class Educacion
             ':nombres' => $_POST['nombres'] ?? null,
             ':calle' => $_POST['calle'] ?? null,
             ':entre_calles' => $_POST['entre_calles'] ?? null,
-            ':colonia' => $_POST['colonia'] ?? null,
+            ':colonia' => $colonia,
             ':municipio' => $_POST['municipio'] ?? null,
             ':estado' => $_POST['estado'] ?? null,
             ':codigo_postal' => $_POST['codigo_postal'] ?? null,
@@ -44,7 +58,7 @@ class Educacion
             ':nombre_tutor' => $_POST['nombre_tutor'] ?? null,
             ':calle_tutor' => $_POST['calle_tutor'] ?? null,
             ':entre_calles_tutor' => $_POST['entre_calles_tutor'] ?? null,
-            ':colonia_tutor' => $_POST['colonia_tutor'] ?? null,
+            ':colonia_tutor' => $colonia_tutor,
             ':municipio_tutor' => $_POST['municipio_tutor'] ?? null,
             ':codigo_postal_tutor' => $_POST['codigo_postal_tutor'] ?? null,
             ':estado_civil_tutor' => $_POST['estado_civil_tutor'] ?? null,
@@ -95,5 +109,29 @@ class Educacion
 
     function getByCurp($curp){
         return $this->db->query("select * from registros_transporte where curp = '$curp';")->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    function buscarColonia($term)
+    {
+
+        $sql = "SELECT DISTINCT id_colonia, CONCAT(cat_abreviatura, ' ', nombre) AS n_colonia FROM cat_colonias2 
+        WHERE  nombre   like '%$term%'                                                          
+        ORDER BY n_colonia ASC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+    }
+    function buscarIdColonia($colonia) {
+        $sql = "SELECT id_colonia FROM cat_colonias2 WHERE nom_col = :colonia";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':colonia', $colonia, PDO::PARAM_STR);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        return $resultado ? $resultado['id_colonia'] : -1;
     }
 }

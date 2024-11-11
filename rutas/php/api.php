@@ -217,6 +217,67 @@ switch ($accion) {
             }
         break;
 
+    case 'dt-estudiantes':
+        $WHERE = '';
+        if (!empty($_POST['colonia'])) {
+            $WHERE .= " AND colonia = '{$_POST['colonia']}'";
+        }
+
+        $columns = array(
+            array(
+                'db' => 'id',
+                'dt' => 'DT_RowData',
+                'formatter' => function ($d, $row) {
+                    return array('id' => $d);
+                }
+            ),
+            array('db' => 'id', 'dt' => 'DT_RowId'),
+            array('db' => 'n_estudiante', 'dt' => 'n_estudiante'),
+            array('db' => 'n_tutor', 'dt' => 'tutor'),
+            array('db' => 'ruta', 'dt' => 'ruta'),
+            array('db' => 'domicilio', 'dt' => 'domicilio'),
+            array('db' => 'accion', 'dt' => 'acciones'),
+        );
+        $primaryKey = 'id';
+        $table = /**@lang MySQL*/"(SELECT 
+            id,
+           CONCAT(nombres,' ',apellido_paterno,' ',apellido_materno) n_estudiante,
+           CONCAT(nombres_tutor,' ',apellido_paterno_tutor,' ',apellido_materno_tutor) n_tutor,
+           ruta,
+           CONCAT('domicilio') domicilio,
+    
+          '<div class=\"dropdown\">
+              <button class=\"btn btn-secondary dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton1\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">
+                Acciones
+              </button>
+              <ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton1\">
+                <li><a class=\"dropdown-item acc-editar\" href=\"#\">Editar</a></li>
+                <li><a class=\"dropdown-item acc-borrar\" href=\"#\">Borrar/a></li> 
+              </ul>
+            </div>' accion
+          FROM  registros_transporte tb  
+          WHERE 1=1 $WHERE) t1";
+        $arr = $core::SSP()->simple($_POST, $table, $primaryKey, $columns);
+        //$arr['tabla'] = $table;
+        echo json_encode($arr);
+        exit;
+        break;
+
+    case 'vista-borrar':
+        $titulo = 'Vista borrar';
+        $contenido = $_POST['id'];
+        break;
+
+    case 'vista-editar':
+        $titulo = 'Vista editar';
+        $contenido = $_POST['id'];
+        break;
+
+    case 'buscar_colonias':
+        $res = $core::educacion()->buscarColonia($_GET['term']);
+        $data = $res; //array_column($res,'n_colonia');
+        break;
+
         //case 'editar_registro':
             //break;
     

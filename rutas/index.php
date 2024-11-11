@@ -20,44 +20,48 @@
     <script src="js/confirm/js/jquery-confirm.js"></script>
 
     <script>
-      $(function () {
-        $.ajax({
-          url: 'php/app/data/buscar_colonia.php',
-          dataType: 'json',
-          success: function (data) {
-            $("#colonia").autocomplete({
-              minLength: 3,
-              source: data,
-              dropdown: {
-                maxItems: 20
-              }
-            });
-          }
-        });
-      });
+      // $(function () {
+      //   $.ajax({
+      //     url: 'php/api.php',
+      //   data : {
+      //     accion : 'buscar_colonia'
+      //   },
+      //     dataType: 'json',
+      //     success: function (response) {
+      //         console.log(response.data);
+      //       $("#colonia").autocomplete({
+      //         minLength: 3,
+      //         source: response.data,
+      //         dropdown: {
+      //           maxItems: 20
+      //         }
+      //       });
+      //         $("#colonia_tutor").autocomplete({
+      //             minLength: 3,
+      //             source: response.data,
+      //             dropdown: {
+      //                 maxItems: 20
+      //             }
+      //         });
+      //     }
+      //   });
+      // });
     </script>
 
-    <script>
-      $(function () {
-        $.ajax({
-          url: 'php/app/data/buscar_colonia.php',
-          dataType: 'json',
-          success: function (data) {
-            $("#colonia_tutor").autocomplete({
-              minLength: 3,
-              source: data,
-              dropdown: {
-                maxItems: 20
-              }
-            });
-          }
-        });
-      });
-    </script>
+
 
 </head>
 <body>
     <div class="container mt-5">
+        <nav class="navbar bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand">Trasporte</a>
+                <form class="d-flex" role="search">
+
+                    <a class="btn btn-outline-success" href="panel.php">Listado</a>
+                </form>
+            </div>
+        </nav>
         <h2>Ficha de Datos Personales para Uso del Transporte</h2>
         <form id="frm-registro" action="php/api.php" method="POST">
             <!-- Datos del Estudiante -->
@@ -91,7 +95,8 @@
             <div class="row">
                 <div class="mb-3 col-md-4">
                     <label for="colonia" class="form-label">Colonia:</label>
-                    <input type="text" class="form-control" id="colonia" name="colonia" required>
+                    <input type="text" class="form-control" id="n_colonia" name="colonia" required>
+                    <input type="hidden"   id="id_colonia" name="id_colonia" required>
                 </div>
                 <div class="mb-3 col-md-4">
                     <label for="municipio" class="form-label">Municipio:</label>
@@ -443,7 +448,7 @@
                         required: true,
                         digits: true,
                         minlength: 1,
-                        maxlength: 15
+                        maxlength: 10
                     },
                     "fecha_nacimiento": {
                         required: true,
@@ -491,6 +496,7 @@
                     },
                     "correo_alumno": {
                         required: true,
+                        email: true,
                         minlength: 1,
                         maxlength: 50
                     },
@@ -548,13 +554,13 @@
                         required: true,
                         digits: true,
                         minlength: 1,
-                        maxlength: 15
+                        maxlength: 10
                     },
                     "telefono_tutor2": {
                         required: true,
                         digits: true,
                         minlength: 1,
-                        maxlength: 15
+                        maxlength: 10
                     },
                     "ocupación_tutor": {
                         required: true,
@@ -567,6 +573,7 @@
                     },
                     "email_tutor": {
                         required: true,
+                        email: true,
                         minlength: 1,
                         maxlength: 50
 
@@ -603,4 +610,72 @@
                  return false;
              }
            });
+   $("#n_colonia").autocomplete({
+       source:function( request , response ) {
+           var param = {
+               accion:"buscar_colonias",
+               term: request.term,
+           };
+           $.ajax({
+               url: "php/api.php",
+               data : param,
+               dataType: "json",
+               type: "GET",
+               success: function (data) {
+                   $("#shr-ubicaciones").removeClass("ui-autocomplete-loading");
+                   response($.map(data, function( item ) {
+                       item.label = item.n_colonia;
+                       item.value = item.id_colonia;
+                       return item;
+                   }));
+               }
+           });
+       },
+       select:function(event,ui){
+          $("[name=id_colonia]").val(ui.item.id_colonia);
+          setTimeout(function () {
+              $("#n_colonia").val(ui.item.n_colonia);
+          },500);
+       },
+       minLength: 3
+   }).autocomplete("instance")._renderItem = function (ul, item) {
+       debugger;
+       return $("<li>")
+           .append(item.n_colonia)
+           .appendTo(ul);
+   };
+
+   $("#colonia_tutor").autocomplete({
+   source: function(request, response) {
+       var param = {
+           accion: "buscar_colonias",
+           term: request.term,
+       };
+       $.ajax({
+           url: "php/api.php",
+           data: param,
+           dataType: "json",
+           type: "GET",
+           success: function(data) {
+               $("#shr-ubicaciones").removeClass("ui-autocomplete-loading");
+               response($.map(data, function(item) {
+                   item.label = item.n_colonia;
+                   item.value = item.id_colonia;
+                   return item;
+               }));
+           }
+       });
+   },
+   select: function(event, ui) {
+       $("[name=id_colonia_tutor]").val(ui.item.id_colonia);
+       setTimeout(function() {
+           $("#colonia_tutor").val(ui.item.n_colonia);
+       }, 500);
+   },
+   minLength: 3
+}).autocomplete("instance")._renderItem = function(ul, item) {
+   return $("<li>")
+       .append(item.n_colonia)
+       .appendTo(ul);
+};
 </script>

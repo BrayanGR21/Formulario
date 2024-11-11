@@ -27,10 +27,10 @@ class core
       //  require_once  'vendor/Bcrypt/Bcrypt.php';
         //return new Bcrypt();
     //}
-    //public static function SSP(){
-     //   require_once 'vendor/datatables/ssp.class.php';
-     //   return new SSP(self::$mdb);
-   // }
+    public static function SSP(){
+        require_once 'vendor/datatables/ssp.class.php';
+        return new SSP(self::$mdb);
+    }
 
    // public static function FPDF($orientation='P', $unit='mm', $size='A4'){
        // require_once 'vendor/FPDF/fpdf.php';
