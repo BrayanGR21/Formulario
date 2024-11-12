@@ -147,4 +147,29 @@
            }
        });
     });
+    $(document).on("click.evt", ".acc-borrar", function () {
+    var _id = $(this).closest("tr").data("id");
+    
+    // Confirmación antes de eliminar
+    if (confirm("¿Estás seguro de que deseas eliminar este registro?")) {
+        $.ajax({
+            url: 'php/api.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                accion: 'vista-borrar',
+                id: _id
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert("Registro eliminado correctamente");
+                    $(`tr[data-id="${_id}"]`).remove();
+                } else {
+                    alert("No se pudo eliminar el registro: " + response.msg);
+                }
+            },
+        });
+    }
+});
+
 </script>

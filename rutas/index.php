@@ -94,10 +94,13 @@
             
             <div class="row">
                 <div class="mb-3 col-md-4">
-                    <label for="colonia" class="form-label">Colonia:</label>
-                    <input type="text" class="form-control" id="n_colonia" name="colonia" required>
-                    <input type="hidden"   id="id_colonia" name="id_colonia" required>
+                    <label for="colonia" class="form-label">Colonia (Sino está, deja en blanco)</label>
+                    <input type="text" class="form-control" id="n_colonia" name="colonia" value="OTRA" required
+                            onfocus="if (this.value === 'OTRA') { this.value = ''; }" 
+                            onblur="if (this.value === '') { this.value = 'OTRA'; }">
+                    <input type="hidden" id="id_colonia" name="id_colonia" required>
                 </div>
+
                 <div class="mb-3 col-md-4">
                     <label for="municipio" class="form-label">Municipio:</label>
                     <input type="text" class="form-control" id="municipio" name="municipio" required>
@@ -106,35 +109,21 @@
                     <label for="estado" class="form-label">Estado:</label>
                     <input type="text" class="form-control" id="estado" name="estado" required>
                 </div>
-            </div>
-            <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" id="esAltamira" onchange="llenarCamposAltamira()">
-                <label class="form-check-label" for="esAltamira">
-                    ¿Es una colonia de Altamira?
-                </label>
-            </div>
-            
-            <!-- Si es que es de Altamira -->
-            <script>
-            function llenarCamposAltamira() {
-                const esAltamira = document.getElementById("esAltamira").checked;
-                const municipioInput = document.getElementById("municipio");
-                const estadoInput = document.getElementById("estado");
 
-                if (esAltamira) {
-                    municipioInput.value = "Altamira";
-                    estadoInput.value = "Tamaulipas";
-                    municipioInput.readOnly = true;
-                    estadoInput.readOnly = true;
-                } else {
-                    municipioInput.value = "";
-                    estadoInput.value = "";
-                    municipioInput.readOnly = false;
-                    estadoInput.readOnly = false;
-                }
-            }
-            </script>
-
+                <script>
+                    document.getElementById('n_colonia').addEventListener('input', function() {
+                        // Solo establecer Altamira y Tamaulipas si el campo de colonia tiene texto
+                        if (this.value.trim() !== '') {
+                            document.getElementById('municipio').value = 'Altamira';
+                            document.getElementById('estado').value = 'Tamaulipas';
+                        } else {
+                            // Limpiar los campos si no hay texto en colonia
+                            document.getElementById('municipio').value = '';
+                            document.getElementById('estado').value = '';
+                        }
+                    });
+                </script>
+            </div>
 
             <div class="row">
                 <div class="mb-3 col-md-4">
@@ -239,7 +228,7 @@
                     ¿Viven juntos el tutor y el estudiante?
                 </label>
             </div>
-<!-- Si es de altamira pero del tutor -->
+
             <div class="row">
                 <div class="mb-3 col-md-3">
                     <label for="calle_tutor" class="form-label">Calle y No.:</label>
@@ -250,35 +239,25 @@
                     <input type="text" class="form-control" id="entre_calles_tutor" name="entre_calles_tutor" required>
                 </div>
                 <div class="mb-3 col-md-3">
-                    <label for="colonia_tutor" class="form-label">Colonia:</label>
-                    <input type="text" class="form-control" id="colonia_tutor" name="colonia_tutor" required>
+                    <label for="colonia_tutor" class="form-label">Colonia (Sino está, deja en blanco):</label>
+                    <input type="text" class="form-control" id="colonia_tutor" name="colonia_tutor" value="OTRA" required
+                            onfocus="if (this.value === 'OTRA') { this.value = ''; }" 
+                            onblur="if (this.value === '') { this.value = 'OTRA'; }">
                 </div>
+
                 <div class="mb-3 col-md-3">
                     <label for="municipio_tutor" class="form-label">Municipio:</label>
                     <input type="text" class="form-control" id="municipio_tutor" name="municipio_tutor" required>
                 </div>
-            </div>
-            <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" id="esAltamiraTutor" onchange="llenarMunicipioAltamiraTutor()">
-                <label class="form-check-label" for="esAltamiraTutor">
-                    ¿Es una colonia de Altamira?
-                </label>
-            </div>
-
-            <script>
-            function llenarMunicipioAltamiraTutor() {
-                const esAltamira = document.getElementById("esAltamiraTutor").checked;
-                const municipioInput = document.getElementById("municipio_tutor");
-
-                if (esAltamira) {
-                    municipioInput.value = "Altamira";
-                    municipioInput.readOnly = true;
-                } else {
-                    municipioInput.value = "";
-                    municipioInput.readOnly = false;
-                }
-            }
-            </script>
+                <script>
+                    document.getElementById('colonia_tutor').addEventListener('input', function() {
+                        if (this.value.trim() !== '') {
+                            document.getElementById('municipio_tutor').value = 'Altamira';
+                        } else {
+                            document.getElementById('municipio_tutor').value = '';
+                        }
+                    });
+                </script>
 
             <script>
             function llenarCamposTutor() {

@@ -244,7 +244,7 @@ switch ($accion) {
            CONCAT(nombres,' ',apellido_paterno,' ',apellido_materno) n_estudiante,
            CONCAT(nombres_tutor,' ',apellido_paterno_tutor,' ',apellido_materno_tutor) n_tutor,
            ruta,
-           CONCAT('domicilio') domicilio,
+           CONCAT(calle,'',municipio,'',estado,'') domicilio,
     
           '<div class=\"dropdown\">
               <button class=\"btn btn-secondary dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton1\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">
@@ -252,7 +252,7 @@ switch ($accion) {
               </button>
               <ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton1\">
                 <li><a class=\"dropdown-item acc-editar\" href=\"#\">Editar</a></li>
-                <li><a class=\"dropdown-item acc-borrar\" href=\"#\">Borrar/a></li> 
+                <li><a class=\"dropdown-item acc-borrar\" href=\"#\">Borrar</a></li> 
               </ul>
             </div>' accion
           FROM  registros_transporte tb  
@@ -263,10 +263,38 @@ switch ($accion) {
         exit;
         break;
 
-    case 'vista-borrar':
-        $titulo = 'Vista borrar';
-        $contenido = $_POST['id'];
-        break;
+        case 'vista-borrar':
+            $titulo = 'Vista borrar';
+            if (isset($_POST['id']) && !empty($_POST['id'])) {
+                $id = $_POST['id'];
+        
+                try {
+                    $db = new PDO('mysql:host=localhost;dbname=transporte_escolar', 'root', '');
+                    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                        
+                    $sql = "DELETE FROM registros_transporte WHERE id = :id";
+                    $stmt = $db->prepare($sql);
+                    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                    $stmt->execute();
+        
+                    if ($stmt->rowCount() > 0) {
+                        $contenido = 'El registro ha sido eliminado correctamente.';
+                        echo json_encode(['success' => true, 'msg' => $contenido]);
+                    } else {
+                        $contenido = 'No se pudo encontrar el registro para eliminar.';
+                        echo json_encode(['success' => false, 'msg' => $contenido]);
+                    }
+                } catch (Exception $e) {
+                    $contenido = 'Hubo un error al intentar eliminar el registro: ' . $e->getMessage();
+                    echo json_encode(['success' => false, 'msg' => $contenido]);
+                }
+            } else {
+                $contenido = 'ID del registro no proporcionado.';
+                echo json_encode(['success' => false, 'msg' => $contenido]);
+            }
+            break;
+        
+        
 
     case 'vista-editar':
         $titulo = 'Vista editar';
